@@ -17,18 +17,15 @@ def search_keyword(qusetion, answers):
     }
     counts = []
 
-    if '不是' in qusetion:
-        qusetion = qusetion.replace('不是', '')
+    if '不' in qusetion:
+        qusetion = qusetion.replace('不', '')
         url = 'https://www.baidu.com/s?wd=' + quote(qusetion)
         req = requests.get(url=url, headers=header).text
         for i in range(len(answers)):
             counts.append(req.count(answers[i]))
         index = counts.index(min(counts))
-        if (counts[index] == 0):
-            print('无结果')
-        else:
-            print(answers[index] + " : " + str(counts[index]))
-            print('******************************************')
+        print(answers[index] + " : " + str(counts[index]))
+        print('******************************************')
 
     else:
         url = 'https://www.baidu.com/s?wd=' + quote(qusetion)
@@ -47,7 +44,7 @@ def search_keyword(qusetion, answers):
 def get_question():
     resp = requests.get(
         'http://htpmsg.jiecaojingxuan.com/msg/current', timeout=4).text
-    # resp = requests.get('http://localhost:8000/Desktop/3.json', ).text
+    # resp = requests.get('http://localhost:8000/Desktop/666666/sample.json', ).text
     resp_dict = json.loads(resp)
     if resp_dict['msg'] == 'no data':
         print('...........')
