@@ -2,6 +2,7 @@
 import time
 import json
 import requests
+import webbrowser
 from urllib.parse import quote
 
 
@@ -18,8 +19,11 @@ def search_keyword(qusetion, answers):
     counts = []
 
     if '不' in qusetion:
+        copy_qusetion = qusetion
         qusetion = qusetion.replace('不', '')
+        copy_url = 'https://www.baidu.com/s?wd=' + quote(copy_qusetion)
         url = 'https://www.baidu.com/s?wd=' + quote(qusetion)
+        webbrowser.open(copy_url)
         req = requests.get(url=url, headers=header).text
         for i in range(len(answers)):
             counts.append(req.count(answers[i]))
@@ -29,6 +33,7 @@ def search_keyword(qusetion, answers):
 
     else:
         url = 'https://www.baidu.com/s?wd=' + quote(qusetion)
+        webbrowser.open(url)
         req = requests.get(url=url, headers=header).text
         for i in range(len(answers)):
             counts.append(req.count(answers[i]))
@@ -42,12 +47,13 @@ def search_keyword(qusetion, answers):
 
 
 def get_question():
-    resp = requests.get(
-        'http://htpmsg.jiecaojingxuan.com/msg/current', timeout=4).text
-    # resp = requests.get('http://localhost:8000/Desktop/666666/sample.json', ).text
+    # resp = requests.get(
+    #     'http://htpmsg.jiecaojingxuan.com/msg/current', timeout=4).text
+    resp = requests.get('http://localhost:8000/Desktop/666666/sample.json',
+                        ).text
     resp_dict = json.loads(resp)
     if resp_dict['msg'] == 'no data':
-        print('...........')
+        print('................................')
     else:
         question = resp_dict['data']['event']['desc']
         question = question[question.find('.') + 1:question.find('?')]
